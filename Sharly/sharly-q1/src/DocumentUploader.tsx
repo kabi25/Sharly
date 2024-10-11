@@ -1,8 +1,8 @@
 /** @format */
 
 import React, { useState, ChangeEvent } from "react";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { collection, addDoc } from "firebase/firestore";
+import { ref, uploadBytesResumable, getDownloadURL } from "@firebase/storage";
+import { collection, addDoc } from "@firebase/firestore";
 import { storage, firestore } from "./firebaseConfig";
 import { AiOutlineCloudUpload, AiOutlineCheckCircle } from "react-icons/ai";
 import { BiErrorCircle } from "react-icons/bi";
