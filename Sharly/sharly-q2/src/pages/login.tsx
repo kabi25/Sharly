@@ -1,121 +1,114 @@
 /** @format */
 
-// pages/login.tsx
-import { useState, FormEvent } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "/home/fpt007/Desktop/Sharly GitHub/Sharly/Sharly/sharly-q2/src/firebaseConfig.js";
-import {
-  Button,
-  Input,
-  Box,
-  Heading,
-  Stack,
-  FormControl,
-  FormLabel,
-  InputGroup,
-  InputLeftElement,
-  useToast,
-} from "@chakra-ui/react";
-import { EmailIcon, LockIcon } from "@chakra-ui/icons";
-import { useAuthStore } from "@/store/useAuthStore";
+import React, { MouseEvent, useState } from "react";
+import { Box, Button, Flex, Heading } from "@chakra-ui/react";
+import LoginForm from "./login-form";
+import SignUpForm from "./sign-up-form";
+import bgImg from "../assets/gradient-colors-blur-background.jpg";
 
-export default function Login() {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
-  const setUser = useAuthStore((state) => state.setUser);
-  const toast = useToast(); // Initialize Chakra UI toast for notifications
+import { motion } from "framer-motion";
 
-  const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      setUser(userCredential.user);
-    } catch (error: any) {
-      toast({
-        title: "Login Failed",
-        description: error.message,
-        status: "error",
-        duration: 4000,
-        isClosable: true,
-      });
-    } finally {
-      setLoading(false);
-    }
+const Login = () => {
+  const [isFlipped, setIsFlipped] = useState(false);
+  const [showSignUp, setShowSignUp] = useState(false);
+
+  const flipVariants = {
+    front: {
+      rotateY: 0,
+      transition: { duration: 0.6 },
+      zIndex: 2,
+    },
+    back: {
+      rotateY: 180,
+      transition: { duration: 0.6 },
+      zIndex: 1,
+    },
+  };
+
+  const handleFlip = () => {
+    setIsFlipped(!isFlipped);
   };
 
   return (
-    <Box
-      display="flex"
+    <Flex
       alignItems="center"
       justifyContent="center"
       height="100vh"
-      bgGradient="linear(to-r, teal.500, green.500)"
+      bgSize="cover"
+      bgPosition="center"
+      bgGradient="linear(to-r, yellow.100, green.100)"
       p={4}
+      css={{ perspective: "1000px" }}
     >
       <Box
-        maxWidth="500px" // Increased width for the login box
+        height="50%" // Ensure height is determined by content
+        maxWidth="600px"
         width="100%"
-        bg="white"
+        bg="#F4FAFC"
         borderRadius="lg"
-        boxShadow="lg"
-        p={8}
+        boxShadow="2xl"
+        p={1}
+        // bgImage={`url(${bgImg})`}
+        position="relative"
+        zIndex={1}
       >
-        <Heading textAlign="center" mb={6}>
-          Login
-        </Heading>
-        <form onSubmit={handleLogin}>
-          <Stack spacing={4}>
-            <FormControl id="email" isRequired>
-              <FormLabel>Email</FormLabel>
-              <InputGroup>
-                <InputLeftElement pointerEvents="none">
-                  <EmailIcon color="teal.500" />
-                </InputLeftElement>
-                <Input
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  type="email"
-                  variant="outline"
-                  borderColor="teal.300"
-                  focusBorderColor="teal.500"
-                />
-              </InputGroup>
-            </FormControl>
-            <FormControl id="password" isRequired>
-              <FormLabel>Password</FormLabel>
-              <InputGroup>
-                <InputLeftElement pointerEvents="none">
-                  <LockIcon color="teal.500" />
-                </InputLeftElement>
-                <Input
-                  placeholder="Enter your password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  type="password"
-                  variant="outline"
-                  borderColor="teal.300"
-                  focusBorderColor="teal.500"
-                />
-              </InputGroup>
-            </FormControl>
-            <Button
-              type="submit"
-              colorScheme="teal"
-              isLoading={loading}
-              width="full"
+        <motion.div
+          style={{
+            position: "absolute",
+            width: "100%",
+            height: "100%",
+            backfaceVisibility: "hidden",
+          }}
+          initial={false}
+          animate={isFlipped ? "back" : "front"}
+          variants={flipVariants}
+        >
+          <Box width="90%" m="auto" pt="10">
+            <Heading
+              textAlign="center"
+              mb={6}
+              color="teal.500"
+              fontFamily="heading"
             >
               Login
+            </Heading>
+            <LoginForm />
+            <Button onClick={handleFlip} variant="link" mt={4} color="teal.500">
+              Don't have an account? Sign Up
             </Button>
-          </Stack>
-        </form>
+          </Box>
+        </motion.div>
+
+        <motion.div
+          style={{
+            position: "absolute",
+            width: "100%",
+            height: "100%",
+            backfaceVisibility: "hidden",
+            transform: "rotateY(180deg)",
+          }}
+          initial={false}
+          animate={isFlipped ? "front" : "back"}
+          variants={flipVariants}
+        >
+          <Box width="90%" m="auto" pt="10">
+            <Heading
+              textAlign="center"
+              color="teal.500"
+              fontFamily="heading"
+              mb="10"
+            >
+              Sign Up
+            </Heading>
+            <SignUpForm setShowSignUp={setShowSignUp} />
+            <Button onClick={handleFlip} variant="link" mt={4} color="teal.500">
+              Already have an account? Login
+            </Button>
+          </Box>
+        </motion.div>
       </Box>
-    </Box>
+    </Flex>
   );
-}
+};
+
+export default Login;

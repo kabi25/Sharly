@@ -8,12 +8,12 @@ import { getAuth } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyA4z4HPQHfayJecuKCfJBLyHYwPiMLDnUU",
-  authDomain: "sharly-authentication.firebaseapp.com",
-  projectId: "sharly-authentication",
-  storageBucket: "sharly-authentication.appspot.com",
-  messagingSenderId: "1029242652107",
-  appId: "1:1029242652107:web:6d9a08fa67b3c540b8e24e",
+  apiKey: "AIzaSyChhUfPcncHtcQRXW_QCK3w1sFlRkVCe3A",
+  authDomain: "sharly-q2.firebaseapp.com",
+  projectId: "sharly-q2",
+  storageBucket: "sharly-q2.appspot.com",
+  messagingSenderId: "926128412737",
+  appId: "1:926128412737:web:52d13e6e1abfcd2e4e4ec0",
 };
 
 // Initialize Firebase
