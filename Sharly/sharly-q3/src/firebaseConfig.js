@@ -4,12 +4,12 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyArDKZWCPB4D-IbtowFgphpW_14uk65eKw",
-  authDomain: "testing-firebase-e879b.firebaseapp.com",
-  projectId: "testing-firebase-e879b",
-  storageBucket: "testing-firebase-e879b.appspot.com",
-  messagingSenderId: "882184989884",
-  appId: "1:882184989884:web:d43a89502f53c5f59a34b9",
+  apiKey: "AIzaSyD7zYpwJjcUYy5jQhtky2fQH9rOjZGd6qo",
+  authDomain: "sharly-q3.firebaseapp.com",
+  projectId: "sharly-q3",
+  storageBucket: "sharly-q3.appspot.com",
+  messagingSenderId: "484754108324",
+  appId: "1:484754108324:web:1fc8aacf4b19def5c1db31",
 };
 
 const app = initializeApp(firebaseConfig);

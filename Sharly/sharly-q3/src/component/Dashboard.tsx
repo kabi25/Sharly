@@ -1,39 +1,103 @@
 /** @format */
 
-import React, { useEffect } from "react";
-import { collection, onSnapshot, query } from "firebase/firestore";
+// components/Dashboard.tsx
+import { useEffect, useState } from "react";
 import { useDocumentStore } from "../store/useDocumentStore";
-import { db } from "../firebaseConfig";
-import DocumentList from "./DocumentList";
-import ManualRefresh from "./ManualRefresh";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  Pagination,
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+} from "@mui/material";
+import bgImg from "/home/fpt007/Desktop/Sharly GitHub/Sharly/Sharly/sharly-q3/src/asset/gradient-colors-blur-background.jpg";
 
-interface MyDocument {
-  id: string;
-  name: string;
-  [key: string]: any;
-}
+const Dashboard = () => {
+  const { documents, fetchDocuments } = useDocumentStore();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [docsPerPage] = useState(10); // 10 docs per page
 
-const Dashboard: React.FC = () => {
-  const { documents, setDocuments } = useDocumentStore();
-
+  // Fetch documents on mount
   useEffect(() => {
-    const q = query(collection(db, "documents"));
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const docs = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      })) as MyDocument[];
-      setDocuments(docs);
-    });
+    fetchDocuments();
+  }, [fetchDocuments]);
 
-    return () => unsubscribe();
-  }, [setDocuments]);
+  // Get current documents for pagination
+  const indexOfLastDoc = currentPage * docsPerPage;
+  const indexOfFirstDoc = indexOfLastDoc - docsPerPage;
+  const currentDocs = documents.slice(indexOfFirstDoc, indexOfLastDoc);
 
+  // Change page
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setCurrentPage(value);
+  };
+  console.log(documents);
   return (
-    <div>
-      <h1>Document Dashboard</h1>
-      <DocumentList />
-      <ManualRefresh />
+    <div
+      style={{
+        backgroundImage: `url(${bgImg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        height: "100vh",
+        width: "100vw",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Container
+        maxWidth="md"
+        style={{
+          marginTop: "50px",
+          backgroundColor: "rgba(255, 255, 255, 0.5)",
+          padding: "20px",
+          borderRadius: "8px",
+          boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
+        }}
+      >
+        <Typography variant="h4" gutterBottom>
+          Document Dashboard
+        </Typography>
+
+        {documents.length === 0 ? (
+          <Box display="flex" justifyContent="center" my={4}>
+            <CircularProgress />
+          </Box>
+        ) : (
+          <List>
+            {currentDocs.map((doc, index) => (
+              <ListItem key={doc.id}>
+                <ListItemText
+                  primary={`${
+                    (currentPage - 1) * docsPerPage + (index + 1)
+                  }. Document ID: ${doc.id}`}
+                  secondary={JSON.stringify(doc.data)}
+                />
+              </ListItem>
+            ))}
+          </List>
+        )}
+
+        <Box display="flex" justifyContent="center" my={4}>
+          <Pagination
+            count={Math.ceil(documents.length / docsPerPage)}
+            page={currentPage}
+            onChange={handlePageChange}
+            color="primary"
+          />
+        </Box>
+
+        <Button variant="contained" color="primary" onClick={fetchDocuments}>
+          Refresh Documents
+        </Button>
+      </Container>
     </div>
   );
 };

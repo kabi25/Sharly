@@ -1,18 +1,32 @@
 /** @format */
 
+// store/useDocumentStore.ts
+import { onSnapshot, collection } from "firebase/firestore";
 import { create } from "zustand";
-
-interface Document {
-  id: string;
-  name: string;
-}
+import { db } from "../firebaseConfig";
 
 interface DocumentState {
-  documents: Document[];
-  setDocuments: (newDocs: Document[]) => void;
+  documents: any[];
+  fetchDocuments: () => void;
 }
 
 export const useDocumentStore = create<DocumentState>((set) => ({
   documents: [],
-  setDocuments: (newDocs) => set({ documents: newDocs }),
+  fetchDocuments: () => {
+    const docRef = collection(db, "documents");
+    onSnapshot(
+      docRef,
+      (snapshot) => {
+        const docs = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        console.log("Fetched Documents: ", docs);
+        set({ documents: docs });
+      },
+      (error) => {
+        console.error("Error fetching documents: ", error);
+      }
+    );
+  },
 }));
