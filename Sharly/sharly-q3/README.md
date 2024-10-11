@@ -1,7 +1,7 @@
-Overview
+Overview -
 This dashboard fetches and displays a list of documents stored in Firebase Firestore. The document list updates in real-time whenever new documents are added or modified, and there's an option to manually refresh the list.
 
-*Approach*
+Approach -
 Real-Time Data:
 Used Firebase Firestore’s real-time listeners to listen for changes in the document list and update the dashboard in real time.
 
@@ -11,11 +11,11 @@ Managed the state of the document list using Zustand to ensure the data was stor
 Manual Refresh:
 Added a button that manually fetches the document list from Firestore in case real-time updates fail.
 
-*Bonus (Design & Pagination)*
+Bonus (Design & Pagination):
 Styled the dashboard using Material-UI to ensure responsiveness and good user experience.
 Implemented basic pagination to display 10 documents per page, enhancing the usability of the list.
 
-Technologies Used
+Technologies Used:
 ReactJS for the dashboard.
 Firebase Firestore for real-time data fetching.
 Zustand for state management.
