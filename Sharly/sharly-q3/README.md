@@ -15,7 +15,7 @@ Added a button that manually fetches the document list from Firestore in case re
 Styled the dashboard using Material-UI to ensure responsiveness and good user experience.
 Implemented basic pagination to display 10 documents per page, enhancing the usability of the list.
 
-*Technologies Used*
+Technologies Used
 ReactJS for the dashboard.
 Firebase Firestore for real-time data fetching.
 Zustand for state management.
